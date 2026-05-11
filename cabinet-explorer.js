@@ -1,7 +1,7 @@
 // Cabinet Construction Explorer Interactive Functionality
 
-// Cabinet component data
-const cabinetParts = {
+// Base Cabinet component data
+const baseCabinetParts = {
     'cabinet-box': {
         number: 1,
         title: '3/4" Plywood Cabinet Box',
@@ -76,11 +76,82 @@ const cabinetParts = {
     }
 };
 
+// Wall Cabinet component data
+const wallCabinetParts = {
+    'cabinet-box': {
+        number: 1,
+        title: '3/4" Plywood Cabinet Box',
+        description: 'Full 3/4-inch prefinished plywood construction for the cabinet box. Lighter than base cabinets but just as sturdy. Top, bottom, and sides are all solid plywood.',
+        why: 'Wall cabinets need to be strong but not excessively heavy. Plywood provides the perfect strength-to-weight ratio and holds screws securely for reliable wall mounting.'
+    },
+    'back-panel': {
+        number: 7,
+        title: 'Full-Back Panel',
+        description: 'Full 1/4-inch plywood back panel properly dadoed into the cabinet sides. Provides structural integrity and a clean finished look inside.',
+        why: 'The back panel keeps the cabinet square and rigid when mounted to the wall. It also serves as a backer for secure mounting to wall studs.'
+    },
+    'shelf': {
+        number: 3,
+        title: 'Adjustable Shelves',
+        description: '3/4-inch plywood shelves on adjustable pins. Multiple shelves allow customization for plates, glasses, or storage containers.',
+        why: 'Adjustable shelving means you can configure the interior to fit what you actually store. Thick plywood shelves won't sag even when fully loaded with dishes.'
+    },
+    'door': {
+        number: 2,
+        title: 'Five-Piece Doors',
+        description: 'Solid hardwood doors with mortise-and-tenon joinery. Wall cabinets often have two doors that meet in the middle with precise alignment.',
+        why: 'Quality doors stay flat and aligned over time. Proper construction means they won't twist or warp, and they'll close properly for decades.'
+    },
+    'hinges': {
+        number: 4,
+        title: 'Blum Soft-Close Hinges',
+        description: 'European-style concealed hinges with integrated soft-close. Adjustable for perfect door alignment. Six-way adjustment ensures doors stay aligned.',
+        why: 'Wall cabinet doors are at eye level, so alignment matters. Blum hinges allow precise adjustment and the soft-close feature prevents doors from slamming into dishes.'
+    },
+    'mounting-rail': {
+        number: 5,
+        title: 'French Cleat Mounting System',
+        description: 'Heavy-duty mounting rail system for secure wall attachment. Allows for precise leveling and easy installation.',
+        why: 'A proper mounting system ensures your wall cabinets are secure and level. French cleats distribute weight evenly and make installation more straightforward.'
+    },
+    'finished-end': {
+        number: 8,
+        title: 'Finished End Panel',
+        description: 'Exposed ends get a matching finished panel. No raw plywood edges visible in your kitchen.',
+        why: 'Wall cabinets are often visible from the side. A finished end panel makes them look like furniture, not construction boxes.'
+    },
+    'edge-banding': {
+        number: 9,
+        title: 'Edge Banding',
+        description: 'All visible plywood edges are finished with matching edge banding. Protects edges and provides a clean finished appearance.',
+        why: 'Edge banding seals plywood edges against moisture and prevents chipping. It's a sign of quality construction.'
+    },
+    'interior-finish': {
+        number: 10,
+        title: 'Interior Finish',
+        description: 'Cabinet interiors are prefinished for easy cleaning and a professional appearance.',
+        why: 'A finished interior is easier to keep clean and won't absorb odors or stains. It's a detail that shows attention to quality.'
+    },
+    'glass-option': {
+        number: 6,
+        title: 'Glass Door Option',
+        description: 'Optional glass panel inserts for displaying dishes or glassware. Mullions can be added for traditional styling.',
+        why: 'Glass doors add visual interest and let you display items you're proud of. Quality glass installation means no rattling or gaps.'
+    }
+};
+
 // State
+let currentCabinetType = 'base'; // 'base' or 'wall'
 let currentView = 'assembled'; // 'assembled' or 'exploded'
 let selectedPart = null;
 
+// Get current cabinet parts based on type
+function getCurrentParts() {
+    return currentCabinetType === 'base' ? baseCabinetParts : wallCabinetParts;
+}
+
 // Elements
+const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
 const viewToggle = document.getElementById('viewToggle');
 const assembledParts = document.getElementById('assembledParts');
 const explodedParts = document.getElementById('explodedParts');
@@ -91,6 +162,27 @@ const detailNumber = document.getElementById('detailNumber');
 const detailTitle = document.getElementById('detailTitle');
 const detailDescription = document.getElementById('detailDescription');
 const detailWhy = document.getElementById('detailWhy');
+
+// Toggle between base and wall cabinets  
+function toggleCabinetType() {
+    const toggleLabels = cabinetTypeToggle.querySelectorAll('.toggle-label');
+    
+    if (currentCabinetType === 'base') {
+        currentCabinetType = 'wall';
+        toggleLabels[0].classList.remove('active');
+        toggleLabels[1].classList.add('active');
+    } else {
+        currentCabinetType = 'base';
+        toggleLabels[1].classList.remove('active');
+        toggleLabels[0].classList.add('active');
+    }
+    
+    // Update the visualization
+    updateCabinetVisualization();
+    
+    // Clear current selection
+    closeDetailPanel();
+}
 
 // Toggle between assembled and exploded views
 function toggleView() {
@@ -113,9 +205,43 @@ function toggleView() {
     }
 }
 
+// Update cabinet visualization based on type
+function updateCabinetVisualization() {
+    const cabinetViewer = document.getElementById('cabinetViewer');
+    const cabinetSvg = document.getElementById('cabinetSvg');
+    
+    // Hide base-only or wall-only parts
+    if (currentCabinetType === 'wall') {
+        // Hide drawer-related elements for wall cabinets
+        document.querySelectorAll('[data-part="drawer-front"], [data-part="drawer-box"], [data-part="drawer-slides"], [data-part="toe-kick"]').forEach(el => {
+            el.style.display = 'none';
+        });
+        // Show wall cabinet specific parts
+        document.querySelectorAll('[data-part="mounting-rail"], [data-part="glass-option"]').forEach(el => {
+            el.style.display = 'block';
+        });
+    } else {
+        // Show base cabinet elements
+        document.querySelectorAll('[data-part="drawer-front"], [data-part="drawer-box"], [data-part="drawer-slides"], [data-part="toe-kick"]').forEach(el => {
+            el.style.display = 'block';
+        });
+        // Hide wall cabinet specific parts
+        document.querySelectorAll('[data-part="mounting-rail"], [data-part="glass-option"]').forEach(el => {
+            el.style.display = 'none';
+        });
+    }
+    
+    // Add subtle animation
+    cabinetViewer.style.opacity = '0.7';
+    setTimeout(() => {
+        cabinetViewer.style.opacity = '1';
+    }, 200);
+}
+
 // Show part detail
 function showPartDetail(partName) {
-    const partData = cabinetParts[partName];
+    const currentParts = getCurrentParts();
+    const partData = currentParts[partName];
     
     if (!partData) return;
     
@@ -154,7 +280,10 @@ function closeDetailPanel() {
 
 // Initialize
 function initCabinetExplorer() {
-    // Toggle button
+    // Cabinet type toggle
+    cabinetTypeToggle.addEventListener('click', toggleCabinetType);
+    
+    // View toggle button
     viewToggle.addEventListener('click', toggleView);
     
     // Close button
@@ -182,6 +311,9 @@ function initCabinetExplorer() {
             showPartDetail(partName);
         });
     });
+    
+    // Initialize visualization
+    updateCabinetVisualization();
     
     // Add pulse animation to first hotspot as a hint
     setTimeout(() => {
