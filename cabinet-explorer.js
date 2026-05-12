@@ -182,16 +182,27 @@ function updateCabinetImage() {
     const typePrefix = currentCabinetType === 'base' ? 'Base' : 'Wall';
     const viewSuffix = currentView === 'assembled' ? 'Assembled' : 'Exploded';
     const imagePath = `${typePrefix} Cabinet ${viewSuffix}.png`;
+    // URL encode spaces for proper loading
+    const encodedPath = imagePath.replace(/ /g, '%20');
     
     console.log('Updating cabinet image to:', imagePath);
+    console.log('Encoded path:', encodedPath);
     console.log('Current type:', currentCabinetType, 'Current view:', currentView);
     
     if (cabinetImage) {
         // Force reload by setting src
         const oldSrc = cabinetImage.src;
-        cabinetImage.src = imagePath;
+        cabinetImage.src = encodedPath;
         console.log('Image src changed from', oldSrc, 'to', cabinetImage.src);
         cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
+        
+        // Add load event to verify image loaded
+        cabinetImage.onload = function() {
+            console.log('✓ Image loaded successfully:', encodedPath);
+        };
+        cabinetImage.onerror = function() {
+            console.error('✗ Image failed to load:', encodedPath);
+        };
     } else {
         console.error('cabinetImage element not found!');
     }
