@@ -1,5 +1,28 @@
 // Cabinet Construction Explorer Interactive Functionality
 
+// Import 3D viewer module
+let cabinet3D = null;
+
+// State
+let currentViewMode = '2d'; // '2d' or '3d'
+let currentCabinetType = 'base'; // 'base' or 'wall'
+let currentView = 'assembled'; // 'assembled' or 'exploded'
+let selectedPart = null;
+
+// Zoom and pan state (2D only)
+let zoomLevel = 1;
+let panX = 0;
+let panY = 0;
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
+let dragStartPanX = 0;
+let dragStartPanY = 0;
+
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 4;
+const ZOOM_STEP = 0.2;
+
 // Base Cabinet component data
 const baseCabinetParts = {
     'cabinet-box': {
@@ -140,28 +163,42 @@ const wallCabinetParts = {
     }
 };
 
-// State
-let currentCabinetType = 'base'; // 'base' or 'wall'
-let currentView = 'assembled'; // 'assembled' or 'exploded'
-let selectedPart = null;
-
-// Zoom and pan state
-let zoomLevel = 1;
-let panX = 0;
-let panY = 0;
-let isDragging = false;
-let dragStartX = 0;
-let dragStartY = 0;
-let dragStartPanX = 0;
-let dragStartPanY = 0;
-
-const MIN_ZOOM = 1;
-const MAX_ZOOM = 4;
-const ZOOM_STEP = 0.2;
-
 // Get current cabinet parts based on type
 function getCurrentParts() {
     return currentCabinetType === 'base' ? baseCabinetParts : wallCabinetParts;
+}
+
+// Toggle between 2D and 3D view modes
+function toggleViewMode() {
+    const viewModeToggle = document.getElementById('viewModeToggle');
+    const toggleLabels = viewModeToggle.querySelectorAll('.toggle-label');
+    const viewer2D = document.getElementById('cabinetViewer2D');
+    const viewer3DContainer = document.getElementById('viewer3DContainer');
+    
+    if (currentViewMode === '2d') {
+        currentViewMode = '3d';
+        toggleLabels[0].classList.remove('active');
+        toggleLabels[1].classList.add('active');
+        viewer2D.style.display = 'none';
+        viewer3DContainer.style.display = 'flex';
+        
+        // Initialize 3D viewer if not already done
+        if (!cabinet3D) {
+            import('./cabinet-3d.js').then(module => {
+                cabinet3D = module;
+                module.init3DViewer('cabinetViewer3D');
+                //  Set initial state
+                module.toggle3DCabinetType(currentCabinetType);
+                module.toggle3DView(currentView);
+            });
+        }
+    } else {
+        currentViewMode = '2d';
+        toggleLabels[1].classList.remove('active');
+        toggleLabels[0].classList.add('active');
+        viewer2D.style.display = 'flex';
+        viewer3DContainer.style.display = 'none';
+    }
 }
 
 // Toggle between base and wall cabinets  
@@ -179,9 +216,13 @@ function toggleCabinetType() {
         toggleLabels[0].classList.add('active');
     }
     
-    // Update the visualization and image
-    updateCabinetVisualization();
-    updateCabinetImage();
+    // Update visualization based on current view mode
+    if (currentViewMode === '2d') {
+        updateCabinetVisualization();
+        updateCabinetImage();
+    } else if (cabinet3D) {
+        cabinet3D.toggle3DCabinetType(currentCabinetType);
+    }
     
     // Clear current selection
     closeDetailPanel();
@@ -225,8 +266,12 @@ function toggleView() {
         toggleLabels[0].classList.add('active');
     }
     
-    // Update the image
-    updateCabinetImage();
+    // Update visualization based on current view mode
+    if (currentViewMode === '2d') {
+        updateCabinetImage();
+    } else if (cabinet3D) {
+        cabinet3D.toggle3DView(currentView);
+    }
     
     // Clear current selection
     closeDetailPanel();
@@ -471,5 +516,14 @@ window.CabinetExplorer = {
 };
 
 // Expose functions globally for inline onclick handlers (debugging)
+window.toggleViewMode = toggleViewMode;
 window.toggleCabinetType = toggleCabinetType;
 window.toggleView = toggleView;
+
+// Callback for when drawer box is selected in 3D view
+window.onDrawerBoxSelected = function() {
+    const drawerControls = document.getElementById('drawerExplodeControls');
+    if (drawerControls) {
+        drawerControls.style.display = 'block';
+    }
+};
