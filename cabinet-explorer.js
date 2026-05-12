@@ -184,8 +184,12 @@ function updateCabinetImage() {
     
     const cabinetImage = document.getElementById('cabinetImage');
     const cabinetViewer = document.getElementById('cabinetViewer');
-    const typePrefix = currentCabinetType === 'base' ? 'Base' : 'Wall';
-    const viewSuffix = currentView === 'assembled' ? 'Assembled' : 'Exploded';
+    
+    // Capture values immediately, not in setTimeout
+    const type = currentCabinetType;
+    const view = currentView;
+    const typePrefix = type === 'base' ? 'Base' : 'Wall';
+    const viewSuffix = view === 'assembled' ? 'Assembled' : 'Exploded';
     const imagePath = `${typePrefix} Cabinet ${viewSuffix}.png`;
     // URL encode spaces for proper loading
     const encodedPath = imagePath.replace(/ /g, '%20');
@@ -200,41 +204,27 @@ function updateCabinetImage() {
         const oldSrc = cabinetImage.src;
         
         // Change border color to show something is happening
-        console.log('Setting border based on type:', currentCabinetType);
-        if (currentCabinetType === 'wall') {
+        console.log('Setting border based on type:', type);
+        if (type === 'wall') {
             console.log('-> Setting RED border (wall)');
-            cabinetViewer.style.borderLeft = '5px solid red';
+            cabinetViewer.style.borderLeft = '10px solid red';
         } else {
             console.log('-> Setting BLUE border (base)');
-            cabinetViewer.style.borderLeft = '5px solid blue';
+            cabinetViewer.style.borderLeft = '10px solid blue';
         }
         
-        // Fade out
-        cabinetImage.style.opacity = '0.3';
+        // Change image immediately
+        cabinetImage.src = cacheBust;
+        console.log('Image src changed from', oldSrc, 'to', cabinetImage.src);
+        cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
         
-        // Small delay to show fade effect, then change image
-        setTimeout(() => {
-            console.log('Changing src to:', cacheBust);
-            cabinetImage.src = cacheBust;
-            console.log('Image src changed from', oldSrc, 'to', cabinetImage.src);
-            cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
-            
-            // Force reflow
-            void cabinetImage.offsetHeight;
-            
-            // Fade back in
-            cabinetImage.style.opacity = '1';
-            
-            // Add load event to verify image loaded
-            cabinetImage.onload = function() {
-                console.log('✓ Image loaded successfully:', cacheBust);
-                cabinetImage.style.opacity = '1';
-            };
-            cabinetImage.onerror = function() {
-                console.error('✗ Image failed to load:', cacheBust);
-                cabinetImage.style.opacity = '1';
-            };
-        }, 150);
+        // Add load event to verify image loaded
+        cabinetImage.onload = function() {
+            console.log('✓ Image loaded successfully:', cacheBust);
+        };
+        cabinetImage.onerror = function() {
+            console.error('✗ Image failed to load:', cacheBust);
+        };
     } else {
         console.error('cabinetImage element not found!');
     }
