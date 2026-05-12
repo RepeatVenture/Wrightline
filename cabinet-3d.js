@@ -36,8 +36,10 @@ const selectedMaterial = new THREE.MeshStandardMaterial({
 });
 
 // Initialize 3D scene
-export function init3DViewer(containerId) {
+export function init3DViewer(containerId, initialType = 'wall', initialView = 'assembled') {
     console.log('Initializing 3D viewer in:', containerId);
+    currentCabinetType = initialType;
+    currentView = initialView;
     const container = document.getElementById(containerId);
     if (!container) {
         console.error('Container not found:', containerId);
@@ -177,27 +179,27 @@ function loadCabinetModel(type) {
             cabinetModel.scale.set(1, 1, 1);
             cabinetModel.position.set(0, 0, 0);
             
-            // Enable shadows and log mesh info
+            // Enable shadows and apply proper materials
             let meshCount = 0;
+            const defaultMaterial = new THREE.MeshStandardMaterial({
+                color: 0xd4a574, // Light wood color
+                roughness: 0.7,
+                metalness: 0.1,
+                side: THREE.DoubleSide
+            });
+            
             cabinetModel.traverse((node) => {
                 if (node.isMesh) {
                     meshCount++;
                     node.castShadow = true;
                     node.receiveShadow = true;
                     
-                    // Store original material for later restoration
-                    node.userData.originalMaterial = node.material;
+                    // Replace any material with a visible default
+                    // This handles missing textures from SketchUp export
+                    node.material = defaultMaterial.clone();
                     
-                    // Ensure materials are visible
-                    if (node.material) {
-                        if (Array.isArray(node.material)) {
-                            node.material.forEach(mat => {
-                                mat.side = THREE.DoubleSide;
-                            });
-                        } else {
-                            node.material.side = THREE.DoubleSide;
-                        }
-                    }
+                    // Store as original material for later restoration
+                    node.userData.originalMaterial = node.material;
                 }
             });
             

@@ -184,16 +184,8 @@ function toggleViewMode() {
         
         // Initialize 3D viewer if not already done
         if (!cabinet3D && window.init3DViewer) {
-            window.init3DViewer('cabinetViewer3D');
+            window.init3DViewer('cabinetViewer3D', currentCabinetType, currentView);
             cabinet3D = true; // Mark as initialized
-            
-            // Set initial state
-            if (window.toggle3DCabinetType) {
-                window.toggle3DCabinetType(currentCabinetType);
-            }
-            if (window.toggle3DView) {
-                window.toggle3DView(currentView);
-            }
         }
     } else {
         currentViewMode = '2d';
