@@ -103,17 +103,6 @@
     min-height: 600px;
 }
 
-/* Data-attribute based styling for cabinet types - OVERRIDE EVERYTHING */
-.cabinet-viewer[data-cabinet-type="base"] {
-    border: 10px solid blue !important;
-    background-color: #ccccff !important;
-}
-
-.cabinet-viewer[data-cabinet-type="wall"] {
-    border: 10px solid red !important;
-    background-color: #ffcccc !important;
-}
-
 .cabinet-image {
     width: 100%;
     height: auto;

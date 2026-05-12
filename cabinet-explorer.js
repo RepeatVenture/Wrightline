@@ -152,8 +152,6 @@ function getCurrentParts() {
 
 // Toggle between base and wall cabinets  
 function toggleCabinetType() {
-    console.log('toggleCabinetType called');
-    
     const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
     const toggleLabels = cabinetTypeToggle.querySelectorAll('.toggle-label');
     
@@ -167,8 +165,6 @@ function toggleCabinetType() {
         toggleLabels[0].classList.add('active');
     }
     
-    console.log('Current cabinet type:', currentCabinetType);
-    
     // Update the visualization and image
     updateCabinetVisualization();
     updateCabinetImage();
@@ -179,14 +175,10 @@ function toggleCabinetType() {
 
 // Update cabinet image based on type and view
 function updateCabinetImage() {
-    console.log('=== updateCabinetImage ENTRY ===');
-    console.log('currentCabinetType at function start:', currentCabinetType);
-    console.log('currentView at function start:', currentView);
-    
     const cabinetImage = document.getElementById('cabinetImage');
     const cabinetViewer = document.getElementById('cabinetViewer');
     
-    // Capture values immediately, not in setTimeout
+    // Capture values immediately
     const type = currentCabinetType;
     const view = currentView;
     const typePrefix = type === 'base' ? 'Base' : 'Wall';
@@ -195,106 +187,14 @@ function updateCabinetImage() {
     // Add timestamp to force cache refresh
     const cacheBust = imagePath + '?t=' + Date.now();
     
-    console.log('Updating cabinet image to:', imagePath);
-    console.log('Path with cache bust:', cacheBust);
-    console.log('typePrefix:', typePrefix, 'viewSuffix:', viewSuffix);
-    
     if (cabinetImage) {
-        const oldSrc = cabinetImage.src;
-        
-        // SUPER OBVIOUS visual indicators
-        console.log('Setting border and background based on type:', type);
-        
-        // Set data attribute for CSS-based styling
-        cabinetViewer.setAttribute('data-cabinet-type', type);
-        console.log('Set data-cabinet-type attribute to:', type);
-        
-        if (type === 'wall') {
-            console.log('-> Setting RED border + pink background (wall)');
-            cabinetViewer.style.border = '10px solid red !important';
-            cabinetViewer.style.backgroundColor = '#ffcccc !important';
-            cabinetViewer.style.setProperty('border', '10px solid red', 'important');
-            cabinetViewer.style.setProperty('background-color', '#ffcccc', 'important');
-        } else {
-            console.log('-> Setting BLUE border + light blue background (base)');
-            cabinetViewer.style.border = '10px solid blue !important';
-            cabinetViewer.style.backgroundColor = '#ccccff !important';
-            cabinetViewer.style.setProperty('border', '10px solid blue', 'important');
-            cabinetViewer.style.setProperty('background-color', '#ccccff', 'important');
-        }
-        
-        // Log what the actual computed styles are after setting
-        const computedStyle = window.getComputedStyle(cabinetViewer);
-        console.log('ACTUAL border after setting:', computedStyle.border);
-        console.log('ACTUAL background-color after setting:', computedStyle.backgroundColor);
-        
-        // FORCE BROWSER REPAINT - multiple strategies
-        console.log('Forcing repaint...');
-        
-        // Strategy 1: Force reflow by reading offsetHeight
-        void cabinetViewer.offsetHeight;
-        
-        // Strategy 2: Toggle display briefly
-        const originalDisplay = cabinetViewer.style.display;
-        cabinetViewer.style.display = 'none';
-        void cabinetViewer.offsetHeight; // Force reflow
-        cabinetViewer.style.display = originalDisplay || 'flex';
-        
-        // Strategy 3: Add and remove a class to trigger repaint
-        cabinetViewer.classList.add('force-repaint');
-        setTimeout(() => {
-            cabinetViewer.classList.remove('force-repaint');
-        }, 10);
-        
-        // Check again after a delay to see if something is reverting it
-        setTimeout(() => {
-            const checkStyle = window.getComputedStyle(cabinetViewer);
-            console.log('CHECKING 100ms later - border:', checkStyle.border);
-            console.log('CHECKING 100ms later - background:', checkStyle.backgroundColor);
-        }, 100);
-        
-        // Add text overlay showing what's loaded
-        let overlay = document.getElementById('debug-overlay');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.id = 'debug-overlay';
-            overlay.style.position = 'absolute';
-            overlay.style.top = '10px';
-            overlay.style.left = '10px';
-            overlay.style.background = 'rgba(0,0,0,0.8)';
-            overlay.style.color = 'white';
-            overlay.style.padding = '10px';
-            overlay.style.fontSize = '20px';
-            overlay.style.fontWeight = 'bold';
-            overlay.style.zIndex = '1000';
-            overlay.style.borderRadius = '5px';
-            cabinetViewer.appendChild(overlay);
-        }
-        overlay.textContent = `${typePrefix} Cabinet - ${viewSuffix}`;
-        
-        // Change image immediately
         cabinetImage.src = cacheBust;
-        console.log('Image src changed from', oldSrc, 'to', cabinetImage.src);
-        console.log('Image element size:', cabinetImage.width, 'x', cabinetImage.height);
-        console.log('Image element visible?', cabinetImage.offsetParent !== null);
         cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
-        
-        // Add load event to verify image loaded
-        cabinetImage.onload = function() {
-            console.log('✓ Image loaded successfully:', cacheBust);
-            console.log('  Natural size:', cabinetImage.naturalWidth, 'x', cabinetImage.naturalHeight);
-        };
-        cabinetImage.onerror = function() {
-            console.error('✗ Image failed to load:', cacheBust);
-        };
-    } else {
-        console.error('cabinetImage element not found!');
     }
 }
 
 // Toggle between assembled and exploded views
 function toggleView() {
-    console.log('toggleView called');
     const viewToggle = document.getElementById('viewToggle');
     const toggleLabels = viewToggle.querySelectorAll('.toggle-label');
     
@@ -307,8 +207,6 @@ function toggleView() {
         toggleLabels[1].classList.remove('active');
         toggleLabels[0].classList.add('active');
     }
-    
-    console.log('Current view:', currentView);
     
     // Update the image
     updateCabinetImage();
@@ -377,8 +275,6 @@ function closeDetailPanel() {
 
 // Initialize
 function initCabinetExplorer() {
-    console.log('=== Cabinet Explorer Init ===');
-    
     // Get elements
     const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
     const viewToggle = document.getElementById('viewToggle');
@@ -386,14 +282,7 @@ function initCabinetExplorer() {
     const detailClose = document.getElementById('detailClose');
     const cabinetImage = document.getElementById('cabinetImage');
     
-    console.log('Elements found:', {
-        cabinetTypeToggle: !!cabinetTypeToggle,
-        viewToggle: !!viewToggle,
-        cabinetImage: !!cabinetImage
-    });
-    
     if (!cabinetTypeToggle || !viewToggle) {
-        console.error('Cabinet Explorer: Toggle buttons not found');
         return;
     }
     
