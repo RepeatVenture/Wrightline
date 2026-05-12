@@ -177,16 +177,47 @@ function loadCabinetModel(type) {
             cabinetModel.scale.set(1, 1, 1);
             cabinetModel.position.set(0, 0, 0);
             
-            // Enable shadows
+            // Enable shadows and log mesh info
+            let meshCount = 0;
             cabinetModel.traverse((node) => {
                 if (node.isMesh) {
+                    meshCount++;
                     node.castShadow = true;
                     node.receiveShadow = true;
                     
                     // Store original material for later restoration
                     node.userData.originalMaterial = node.material;
+                    
+                    // Ensure materials are visible
+                    if (node.material) {
+                        if (Array.isArray(node.material)) {
+                            node.material.forEach(mat => {
+                                mat.side = THREE.DoubleSide;
+                            });
+                        } else {
+                            node.material.side = THREE.DoubleSide;
+                        }
+                    }
                 }
             });
+            
+            console.log('Meshes found:', meshCount);
+            
+            // Calculate bounding box to see model size
+            const box = new THREE.Box3().setFromObject(cabinetModel);
+            const size = new THREE.Vector3();
+            box.getSize(size);
+            const center = new THREE.Vector3();
+            box.getCenter(center);
+            
+            console.log('Model size:', size);
+            console.log('Model center:', center);
+            console.log('Model position:', cabinetModel.position);
+            
+            // Center the model and adjust camera to look at it
+            cabinetModel.position.sub(center);
+            camera.lookAt(0, 0, 0);
+            controls.target.set(0, 0, 0);
             
             // Group components by type
             groupComponents();
