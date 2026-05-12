@@ -6,7 +6,7 @@ const baseCabinetParts = {
         number: 1,
         title: '3/4" Plywood Cabinet Box',
         description: 'Full 3/4-inch prefinished plywood construction throughout the cabinet box. No particle board or MDF. Each panel is sturdy, stable, and built to handle weight without sagging.',
-        why: 'Plywood is stronger and more moisture-resistant than particle board. It holds screws better, lasts longer, and won't crumble if it gets wet. This is the foundation of a cabinet that will last decades.'
+        why: 'Plywood is stronger and more moisture-resistant than particle board. It holds screws better, lasts longer, and won\'t crumble if it gets wet. This is the foundation of a cabinet that will last decades.'
     },
     'back-panel': {
         number: 7,
@@ -18,7 +18,7 @@ const baseCabinetParts = {
         number: 4,
         title: 'Adjustable Shelf',
         description: '3/4-inch plywood shelves with adjustable positioning. Shelves are finished on all sides and can be moved to fit your storage needs.',
-        why: 'Thick plywood shelves won't sag under the weight of dishes or supplies. Adjustability means the cabinet works for you, not the other way around.'
+        why: 'Thick plywood shelves won\'t sag under the weight of dishes or supplies. Adjustability means the cabinet works for you, not the other way around.'
     },
     'door': {
         number: 2,
