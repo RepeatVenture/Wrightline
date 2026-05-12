@@ -184,10 +184,13 @@ function updateCabinetImage() {
     const imagePath = `${typePrefix} Cabinet ${viewSuffix}.png`;
     
     console.log('Updating cabinet image to:', imagePath);
-    console.log('cabinetImage element:', cabinetImage);
+    console.log('Current type:', currentCabinetType, 'Current view:', currentView);
     
     if (cabinetImage) {
+        // Force reload by setting src
+        const oldSrc = cabinetImage.src;
         cabinetImage.src = imagePath;
+        console.log('Image src changed from', oldSrc, 'to', cabinetImage.src);
         cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
     } else {
         console.error('cabinetImage element not found!');
