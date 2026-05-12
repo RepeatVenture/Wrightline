@@ -4,15 +4,9 @@
 let cabinet3D = null;
 
 // State
-let currentViewMode = '2d'; // '2d' or '3d'
-let currentCabinetType = 'base'; // 'base' or 'wall'
+let currentCabinetType = 'wall'; // 'base' or 'wall'
 let currentView = 'assembled'; // 'assembled' or 'exploded'
 let selectedPart = null;
-
-// Zoom and pan state (2D only)
-let zoomLevel = 1;
-let panX = 0;
-let panY = 0;
 let isDragging = false;
 let dragStartX = 0;
 let dragStartY = 0;
@@ -169,33 +163,6 @@ function getCurrentParts() {
 }
 
 // Toggle between 2D and 3D view modes
-function toggleViewMode() {
-    const viewModeToggle = document.getElementById('viewModeToggle');
-    const toggleLabels = viewModeToggle.querySelectorAll('.toggle-label');
-    const viewer2D = document.getElementById('cabinetViewer2D');
-    const viewer3DContainer = document.getElementById('viewer3DContainer');
-    
-    if (currentViewMode === '2d') {
-        currentViewMode = '3d';
-        toggleLabels[0].classList.remove('active');
-        toggleLabels[1].classList.add('active');
-        viewer2D.style.display = 'none';
-        viewer3DContainer.style.display = 'flex';
-        
-        // Initialize 3D viewer if not already done
-        if (!cabinet3D && window.init3DViewer) {
-            window.init3DViewer('cabinetViewer3D', currentCabinetType, currentView);
-            cabinet3D = true; // Mark as initialized
-        }
-    } else {
-        currentViewMode = '2d';
-        toggleLabels[1].classList.remove('active');
-        toggleLabels[0].classList.add('active');
-        viewer2D.style.display = 'flex';
-        viewer3DContainer.style.display = 'none';
-    }
-}
-
 // Toggle between base and wall cabinets  
 function toggleCabinetType() {
     const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
@@ -211,11 +178,8 @@ function toggleCabinetType() {
         toggleLabels[0].classList.add('active');
     }
     
-    // Update visualization based on current view mode
-    if (currentViewMode === '2d') {
-        updateCabinetVisualization();
-        updateCabinetImage();
-    } else if (window.toggle3DCabinetType) {
+    // Update 3D visualization
+    if (window.toggle3DCabinetType) {
         window.toggle3DCabinetType(currentCabinetType);
     }
     
@@ -261,10 +225,8 @@ function toggleView() {
         toggleLabels[0].classList.add('active');
     }
     
-    // Update visualization based on current view mode
-    if (currentViewMode === '2d') {
-        updateCabinetImage();
-    } else if (window.toggle3DView) {
+    // Update 3D visualization
+    if (window.toggle3DView) {
         window.toggle3DView(currentView);
     }
     
@@ -512,8 +474,7 @@ window.CabinetExplorer = {
     currentView
 };
 
-// Expose functions globally for inline onclick handlers (debugging)
-window.toggleViewMode = toggleViewMode;
+// Expose functions globally for inline onclick handlers
 window.toggleCabinetType = toggleCabinetType;
 window.toggleView = toggleView;
 
@@ -524,3 +485,11 @@ window.onDrawerBoxSelected = function() {
         drawerControls.style.display = 'block';
     }
 };
+
+// Initialize 3D viewer on page load
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.init3DViewer) {
+        window.init3DViewer('cabinetViewer3D', currentCabinetType, currentView);
+        cabinet3D = true;
+    }
+});
