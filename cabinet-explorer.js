@@ -150,19 +150,9 @@ function getCurrentParts() {
     return currentCabinetType === 'base' ? baseCabinetParts : wallCabinetParts;
 }
 
-// Elements
-const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
-const viewToggle = document.getElementById('viewToggle');
-const detailPanel = document.getElementById('detailPanel');
-const detailCard = document.getElementById('detailCard');
-const detailClose = document.getElementById('detailClose');
-const detailNumber = document.getElementById('detailNumber');
-const detailTitle = document.getElementById('detailTitle');
-const detailDescription = document.getElementById('detailDescription');
-const detailWhy = document.getElementById('detailWhy');
-
 // Toggle between base and wall cabinets  
 function toggleCabinetType() {
+    const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
     const toggleLabels = cabinetTypeToggle.querySelectorAll('.toggle-label');
     
     if (currentCabinetType === 'base') {
@@ -196,6 +186,7 @@ function updateCabinetImage() {
 
 // Toggle between assembled and exploded views
 function toggleView() {
+    const viewToggle = document.getElementById('viewToggle');
     const toggleLabels = viewToggle.querySelectorAll('.toggle-label');
     
     currentView = currentView === 'assembled' ? 'exploded' : 'assembled';
@@ -235,6 +226,12 @@ function showPartDetail(partName) {
     
     selectedPart = partName;
     
+    const detailPanel = document.getElementById('detailPanel');
+    const detailNumber = document.getElementById('detailNumber');
+    const detailTitle = document.getElementById('detailTitle');
+    const detailDescription = document.getElementById('detailDescription');
+    const detailWhy = document.getElementById('detailWhy');
+    
     // Update detail card content
     detailNumber.textContent = partData.number;
     detailTitle.textContent = partData.title;
@@ -260,6 +257,7 @@ function showPartDetail(partName) {
 
 // Close detail panel (mobile)
 function closeDetailPanel() {
+    const detailPanel = document.getElementById('detailPanel');
     detailPanel.classList.remove('active');
     document.querySelectorAll('.cabinet-part').forEach(part => {
         part.classList.remove('highlighted');
@@ -268,6 +266,17 @@ function closeDetailPanel() {
 
 // Initialize
 function initCabinetExplorer() {
+    // Get elements
+    const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
+    const viewToggle = document.getElementById('viewToggle');
+    const detailPanel = document.getElementById('detailPanel');
+    const detailClose = document.getElementById('detailClose');
+    
+    if (!cabinetTypeToggle || !viewToggle) {
+        console.error('Cabinet Explorer: Toggle buttons not found');
+        return;
+    }
+    
     // Cabinet type toggle
     cabinetTypeToggle.addEventListener('click', toggleCabinetType);
     
@@ -275,14 +284,18 @@ function initCabinetExplorer() {
     viewToggle.addEventListener('click', toggleView);
     
     // Close button
-    detailClose.addEventListener('click', closeDetailPanel);
+    if (detailClose) {
+        detailClose.addEventListener('click', closeDetailPanel);
+    }
     
     // Click outside to close (mobile)
-    detailPanel.addEventListener('click', (e) => {
-        if (e.target === detailPanel) {
-            closeDetailPanel();
-        }
-    });
+    if (detailPanel) {
+        detailPanel.addEventListener('click', (e) => {
+            if (e.target === detailPanel) {
+                closeDetailPanel();
+            }
+        });
+    }
     
     // Hotspots removed per user request
     
@@ -302,6 +315,7 @@ if (document.readyState === 'loading') {
 window.CabinetExplorer = {
     toggleView,
     showPartDetail,
-    cabinetParts,
+    baseCabinetParts,
+    wallCabinetParts,
     currentView
 };
