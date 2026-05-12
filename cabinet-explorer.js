@@ -153,8 +153,6 @@ function getCurrentParts() {
 // Elements
 const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
 const viewToggle = document.getElementById('viewToggle');
-const assembledParts = document.getElementById('assembledParts');
-const explodedParts = document.getElementById('explodedParts');
 const detailPanel = document.getElementById('detailPanel');
 const detailCard = document.getElementById('detailCard');
 const detailClose = document.getElementById('detailClose');
@@ -177,32 +175,44 @@ function toggleCabinetType() {
         toggleLabels[0].classList.add('active');
     }
     
-    // Update the visualization
+    // Update the visualization and image
     updateCabinetVisualization();
+    updateCabinetImage();
     
     // Clear current selection
     closeDetailPanel();
+}
+
+// Update cabinet image based on type and view
+function updateCabinetImage() {
+    const cabinetImage = document.getElementById('cabinetImage');
+    const typePrefix = currentCabinetType === 'base' ? 'Base' : 'Wall';
+    const viewSuffix = currentView === 'assembled' ? 'Assembled' : 'Exploded';
+    const imagePath = `${typePrefix} Cabinet ${viewSuffix}.png`;
+    
+    cabinetImage.src = imagePath;
+    cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
 }
 
 // Toggle between assembled and exploded views
 function toggleView() {
     const toggleLabels = viewToggle.querySelectorAll('.toggle-label');
     
-    if (currentView === 'assembled') {
-        currentView = 'exploded';
-        assembledParts.classList.remove('active');
-        explodedParts.classList.add('active');
-        
+    currentView = currentView === 'assembled' ? 'exploded' : 'assembled';
+    
+    if (currentView === 'exploded') {
         toggleLabels[0].classList.remove('active');
         toggleLabels[1].classList.add('active');
     } else {
-        currentView = 'assembled';
-        explodedParts.classList.remove('active');
-        assembledParts.classList.add('active');
-        
         toggleLabels[1].classList.remove('active');
         toggleLabels[0].classList.add('active');
     }
+    
+    // Update the image
+    updateCabinetImage();
+    
+    // Clear current selection
+    closeDetailPanel();
 }
 
 // Update cabinet visualization based on type
@@ -314,6 +324,7 @@ function initCabinetExplorer() {
     
     // Initialize visualization
     updateCabinetVisualization();
+    updateCabinetImage();
     
     // Add pulse animation to first hotspot as a hint
     setTimeout(() => {

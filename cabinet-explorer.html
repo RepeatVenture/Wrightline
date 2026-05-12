@@ -14,9 +14,10 @@
             <div class="explorer-container">
                 <!-- Cabinet Visualization -->
                 <div class="cabinet-viewer" id="cabinetViewer">
-                    <svg viewBox="0 0 800 900" class="cabinet-svg" id="cabinetSvg">
-                        <!-- Exploded view elements (hidden initially) -->
-                        <g class="exploded-parts" id="explodedParts">
+                    <img id="cabinetImage" src="Base Cabinet Assembled.png" alt="Cabinet Construction" class="cabinet-image" />
+                    <svg viewBox="0 0 800 900" class="cabinet-svg hotspot-overlay" id="cabinetSvg">
+                        <!-- Hotspot markers only - image shows actual cabinet -->
+                        <g class="exploded-parts" id="explodedParts" style="display: none;">
                             <!-- Top pieces -->
                             <rect class="cabinet-part" data-part="top-panel" x="250" y="20" width="300" height="10" fill="#C8B69C" stroke="#8B7355" stroke-width="2" />
                             
@@ -65,8 +66,8 @@
                             <line class="cabinet-part" data-part="edge-banding" x1="335" y1="100" x2="335" y2="550" stroke="#8B7355" stroke-width="4" stroke-linecap="round" />
                         </g>
 
-                        <!-- Assembled view -->
-                        <g class="assembled-parts active" id="assembledParts">
+                        <!-- Assembled view hotspots -->
+                        <g class="assembled-parts active" id="assembledParts" style="display: none;">
                             <!-- Main cabinet body -->
                             <rect class="cabinet-part" data-part="cabinet-box" x="340" y="100" width="120" height="450" fill="#C8B69C" stroke="#8B7355" stroke-width="2.5" />
                             
@@ -104,15 +105,6 @@
                             <!-- Edge banding -->
                             <line class="cabinet-part" data-part="edge-banding" x1="340" y1="100" x2="340" y2="550" stroke="#8B7355" stroke-width="3" stroke-linecap="round" />
                         </g>
-
-                        <!-- Wood grain pattern definition -->
-                        <defs>
-                            <pattern id="woodGrain" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-                                <line x1="0" y1="20" x2="100" y2="20" stroke="#8B7355" stroke-width="0.5" opacity="0.3" />
-                                <line x1="0" y1="45" x2="100" y2="45" stroke="#8B7355" stroke-width="0.5" opacity="0.2" />
-                                <line x1="0" y1="70" x2="100" y2="70" stroke="#8B7355" stroke-width="0.5" opacity="0.3" />
-                            </pattern>
-                        </defs>
 
                         <!-- Hotspot markers (numbers) -->
                         <g class="hotspot-markers" id="hotspotMarkers">
