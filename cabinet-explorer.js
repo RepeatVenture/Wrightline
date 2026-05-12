@@ -178,6 +178,10 @@ function toggleCabinetType() {
 
 // Update cabinet image based on type and view
 function updateCabinetImage() {
+    console.log('=== updateCabinetImage ENTRY ===');
+    console.log('currentCabinetType at function start:', currentCabinetType);
+    console.log('currentView at function start:', currentView);
+    
     const cabinetImage = document.getElementById('cabinetImage');
     const cabinetViewer = document.getElementById('cabinetViewer');
     const typePrefix = currentCabinetType === 'base' ? 'Base' : 'Wall';
@@ -190,15 +194,18 @@ function updateCabinetImage() {
     
     console.log('Updating cabinet image to:', imagePath);
     console.log('Encoded path with cache bust:', cacheBust);
-    console.log('Current type:', currentCabinetType, 'Current view:', currentView);
+    console.log('typePrefix:', typePrefix, 'viewSuffix:', viewSuffix);
     
     if (cabinetImage) {
         const oldSrc = cabinetImage.src;
         
         // Change border color to show something is happening
+        console.log('Setting border based on type:', currentCabinetType);
         if (currentCabinetType === 'wall') {
+            console.log('-> Setting RED border (wall)');
             cabinetViewer.style.borderLeft = '5px solid red';
         } else {
+            console.log('-> Setting BLUE border (base)');
             cabinetViewer.style.borderLeft = '5px solid blue';
         }
         
@@ -207,6 +214,7 @@ function updateCabinetImage() {
         
         // Small delay to show fade effect, then change image
         setTimeout(() => {
+            console.log('Changing src to:', cacheBust);
             cabinetImage.src = cacheBust;
             console.log('Image src changed from', oldSrc, 'to', cabinetImage.src);
             cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
