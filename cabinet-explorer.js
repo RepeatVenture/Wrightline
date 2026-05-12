@@ -179,25 +179,35 @@ function toggleCabinetType() {
 // Update cabinet image based on type and view
 function updateCabinetImage() {
     const cabinetImage = document.getElementById('cabinetImage');
+    const cabinetViewer = document.getElementById('cabinetViewer');
     const typePrefix = currentCabinetType === 'base' ? 'Base' : 'Wall';
     const viewSuffix = currentView === 'assembled' ? 'Assembled' : 'Exploded';
     const imagePath = `${typePrefix} Cabinet ${viewSuffix}.png`;
     // URL encode spaces for proper loading
     const encodedPath = imagePath.replace(/ /g, '%20');
+    // Add timestamp to force cache refresh
+    const cacheBust = encodedPath + '?t=' + Date.now();
     
     console.log('Updating cabinet image to:', imagePath);
-    console.log('Encoded path:', encodedPath);
+    console.log('Encoded path with cache bust:', cacheBust);
     console.log('Current type:', currentCabinetType, 'Current view:', currentView);
     
     if (cabinetImage) {
         const oldSrc = cabinetImage.src;
+        
+        // Change border color to show something is happening
+        if (currentCabinetType === 'wall') {
+            cabinetViewer.style.borderLeft = '5px solid red';
+        } else {
+            cabinetViewer.style.borderLeft = '5px solid blue';
+        }
         
         // Fade out
         cabinetImage.style.opacity = '0.3';
         
         // Small delay to show fade effect, then change image
         setTimeout(() => {
-            cabinetImage.src = encodedPath;
+            cabinetImage.src = cacheBust;
             console.log('Image src changed from', oldSrc, 'to', cabinetImage.src);
             cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
             
@@ -209,11 +219,11 @@ function updateCabinetImage() {
             
             // Add load event to verify image loaded
             cabinetImage.onload = function() {
-                console.log('✓ Image loaded successfully:', encodedPath);
+                console.log('✓ Image loaded successfully:', cacheBust);
                 cabinetImage.style.opacity = '1';
             };
             cabinetImage.onerror = function() {
-                console.error('✗ Image failed to load:', encodedPath);
+                console.error('✗ Image failed to load:', cacheBust);
                 cabinetImage.style.opacity = '1';
             };
         }, 150);
