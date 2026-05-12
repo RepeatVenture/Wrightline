@@ -182,9 +182,9 @@ function loadCabinetModel(type) {
             // Enable shadows and apply proper materials
             let meshCount = 0;
             const defaultMaterial = new THREE.MeshStandardMaterial({
-                color: 0xd4a574, // Light wood color
-                roughness: 0.7,
-                metalness: 0.1,
+                color: 0xffffff, // White
+                roughness: 0.6,
+                metalness: 0.0,
                 side: THREE.DoubleSide
             });
             
