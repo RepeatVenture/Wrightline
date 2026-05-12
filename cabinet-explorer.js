@@ -279,16 +279,20 @@ function closeDetailPanel() {
 
 // Initialize
 function initCabinetExplorer() {
-    console.log('initCabinetExplorer called');
+    console.log('=== Cabinet Explorer Init ===');
     
     // Get elements
     const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
     const viewToggle = document.getElementById('viewToggle');
     const detailPanel = document.getElementById('detailPanel');
     const detailClose = document.getElementById('detailClose');
+    const cabinetImage = document.getElementById('cabinetImage');
     
-    console.log('cabinetTypeToggle:', cabinetTypeToggle);
-    console.log('viewToggle:', viewToggle);
+    console.log('Elements found:', {
+        cabinetTypeToggle: !!cabinetTypeToggle,
+        viewToggle: !!viewToggle,
+        cabinetImage: !!cabinetImage
+    });
     
     if (!cabinetTypeToggle || !viewToggle) {
         console.error('Cabinet Explorer: Toggle buttons not found');
@@ -297,14 +301,19 @@ function initCabinetExplorer() {
     
     // Cabinet type toggle
     cabinetTypeToggle.addEventListener('click', function(e) {
-        console.log('Cabinet type toggle clicked', e);
+        console.log('=== Cabinet Type Button Clicked ===');
+        e.preventDefault();
+        e.stopPropagation();
         toggleCabinetType();
     });
     
     // View toggle button
     viewToggle.addEventListener('click', function(e) {
-        console.log('View toggle clicked', e);
+        console.log('=== View Toggle Button Clicked ===');
+        e.preventDefault();
+        e.stopPropagation();
         toggleView();
+    });
     });
     
     // Close button
