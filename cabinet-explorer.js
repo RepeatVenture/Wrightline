@@ -203,24 +203,48 @@ function updateCabinetImage() {
     if (cabinetImage) {
         const oldSrc = cabinetImage.src;
         
-        // Change border color to show something is happening
-        console.log('Setting border based on type:', type);
+        // SUPER OBVIOUS visual indicators
+        console.log('Setting border and background based on type:', type);
         if (type === 'wall') {
-            console.log('-> Setting RED border (wall)');
-            cabinetViewer.style.borderLeft = '10px solid red';
+            console.log('-> Setting RED border + pink background (wall)');
+            cabinetViewer.style.border = '10px solid red';
+            cabinetViewer.style.backgroundColor = '#ffcccc';
         } else {
-            console.log('-> Setting BLUE border (base)');
-            cabinetViewer.style.borderLeft = '10px solid blue';
+            console.log('-> Setting BLUE border + light blue background (base)');
+            cabinetViewer.style.border = '10px solid blue';
+            cabinetViewer.style.backgroundColor = '#ccccff';
         }
+        
+        // Add text overlay showing what's loaded
+        let overlay = document.getElementById('debug-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'debug-overlay';
+            overlay.style.position = 'absolute';
+            overlay.style.top = '10px';
+            overlay.style.left = '10px';
+            overlay.style.background = 'rgba(0,0,0,0.8)';
+            overlay.style.color = 'white';
+            overlay.style.padding = '10px';
+            overlay.style.fontSize = '20px';
+            overlay.style.fontWeight = 'bold';
+            overlay.style.zIndex = '1000';
+            overlay.style.borderRadius = '5px';
+            cabinetViewer.appendChild(overlay);
+        }
+        overlay.textContent = `${typePrefix} Cabinet - ${viewSuffix}`;
         
         // Change image immediately
         cabinetImage.src = cacheBust;
         console.log('Image src changed from', oldSrc, 'to', cabinetImage.src);
+        console.log('Image element size:', cabinetImage.width, 'x', cabinetImage.height);
+        console.log('Image element visible?', cabinetImage.offsetParent !== null);
         cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
         
         // Add load event to verify image loaded
         cabinetImage.onload = function() {
             console.log('✓ Image loaded successfully:', cacheBust);
+            console.log('  Natural size:', cabinetImage.naturalWidth, 'x', cabinetImage.naturalHeight);
         };
         cabinetImage.onerror = function() {
             console.error('✗ Image failed to load:', cacheBust);
