@@ -49,6 +49,8 @@
     border-radius: 50px;
     padding: 4px;
     cursor: pointer;
+    z-index: 10;
+    cursor: pointer;
     font-family: var(--font-body);
 }
 
@@ -107,20 +109,7 @@
 }
 
 .cabinet-svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.hotspot-overlay {
-    pointer-events: none;
-}
-
-.cabinet-svg .hotspot {
-    pointer-events: auto;
+    display: none;
 }
 
 /* Hide SVG cabinet parts, only show hotspots */
@@ -139,19 +128,13 @@
     display: none;
 }
 
-/* Hotspot Markers */
+/* Hotspot Markers - Hidden */
 .hotspot-markers {
-    pointer-events: none;
+    display: none;
 }
 
 .hotspot {
-    cursor: pointer;
-    pointer-events: all;
-    transition: transform 0.3s ease;
-}
-
-.hotspot:hover {
-    transform: scale(1.15);
+    display: none;
 }
 
 .hotspot circle {

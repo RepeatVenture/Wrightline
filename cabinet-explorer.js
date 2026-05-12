@@ -218,30 +218,8 @@ function toggleView() {
 // Update cabinet visualization based on type
 function updateCabinetVisualization() {
     const cabinetViewer = document.getElementById('cabinetViewer');
-    const cabinetSvg = document.getElementById('cabinetSvg');
     
-    // Hide base-only or wall-only parts
-    if (currentCabinetType === 'wall') {
-        // Hide drawer-related elements for wall cabinets
-        document.querySelectorAll('[data-part="drawer-front"], [data-part="drawer-box"], [data-part="drawer-slides"], [data-part="toe-kick"]').forEach(el => {
-            el.style.display = 'none';
-        });
-        // Show wall cabinet specific parts
-        document.querySelectorAll('[data-part="mounting-rail"], [data-part="glass-option"]').forEach(el => {
-            el.style.display = 'block';
-        });
-    } else {
-        // Show base cabinet elements
-        document.querySelectorAll('[data-part="drawer-front"], [data-part="drawer-box"], [data-part="drawer-slides"], [data-part="toe-kick"]').forEach(el => {
-            el.style.display = 'block';
-        });
-        // Hide wall cabinet specific parts
-        document.querySelectorAll('[data-part="mounting-rail"], [data-part="glass-option"]').forEach(el => {
-            el.style.display = 'none';
-        });
-    }
-    
-    // Add subtle animation
+    // Add subtle animation on type change
     cabinetViewer.style.opacity = '0.7';
     setTimeout(() => {
         cabinetViewer.style.opacity = '1';
@@ -306,36 +284,11 @@ function initCabinetExplorer() {
         }
     });
     
-    // Hotspot clicks
-    document.querySelectorAll('.hotspot').forEach(hotspot => {
-        hotspot.addEventListener('click', () => {
-            const partName = hotspot.getAttribute('data-part');
-            showPartDetail(partName);
-        });
-    });
-    
-    // Cabinet part clicks
-    document.querySelectorAll('.cabinet-part').forEach(part => {
-        part.addEventListener('click', () => {
-            const partName = part.getAttribute('data-part');
-            showPartDetail(partName);
-        });
-    });
+    // Hotspots removed per user request
     
     // Initialize visualization
     updateCabinetVisualization();
     updateCabinetImage();
-    
-    // Add pulse animation to first hotspot as a hint
-    setTimeout(() => {
-        const firstHotspot = document.querySelector('.hotspot[data-part="cabinet-box"]');
-        if (firstHotspot) {
-            firstHotspot.classList.add('pulse');
-            setTimeout(() => {
-                firstHotspot.classList.remove('pulse');
-            }, 6000);
-        }
-    }, 1000);
 }
 
 // Initialize when DOM is ready
