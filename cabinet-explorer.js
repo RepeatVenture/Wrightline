@@ -205,13 +205,29 @@ function updateCabinetImage() {
         console.log('Setting border and background based on type:', type);
         if (type === 'wall') {
             console.log('-> Setting RED border + pink background (wall)');
-            cabinetViewer.style.border = '10px solid red';
-            cabinetViewer.style.backgroundColor = '#ffcccc';
+            cabinetViewer.style.border = '10px solid red !important';
+            cabinetViewer.style.backgroundColor = '#ffcccc !important';
+            cabinetViewer.style.setProperty('border', '10px solid red', 'important');
+            cabinetViewer.style.setProperty('background-color', '#ffcccc', 'important');
         } else {
             console.log('-> Setting BLUE border + light blue background (base)');
-            cabinetViewer.style.border = '10px solid blue';
-            cabinetViewer.style.backgroundColor = '#ccccff';
+            cabinetViewer.style.border = '10px solid blue !important';
+            cabinetViewer.style.backgroundColor = '#ccccff !important';
+            cabinetViewer.style.setProperty('border', '10px solid blue', 'important');
+            cabinetViewer.style.setProperty('background-color', '#ccccff', 'important');
         }
+        
+        // Log what the actual computed styles are after setting
+        const computedStyle = window.getComputedStyle(cabinetViewer);
+        console.log('ACTUAL border after setting:', computedStyle.border);
+        console.log('ACTUAL background-color after setting:', computedStyle.backgroundColor);
+        
+        // Check again after a delay to see if something is reverting it
+        setTimeout(() => {
+            const checkStyle = window.getComputedStyle(cabinetViewer);
+            console.log('CHECKING 100ms later - border:', checkStyle.border);
+            console.log('CHECKING 100ms later - background:', checkStyle.backgroundColor);
+        }, 100);
         
         // Add text overlay showing what's loaded
         let overlay = document.getElementById('debug-overlay');
