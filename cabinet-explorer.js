@@ -145,6 +145,20 @@ let currentCabinetType = 'base'; // 'base' or 'wall'
 let currentView = 'assembled'; // 'assembled' or 'exploded'
 let selectedPart = null;
 
+// Zoom and pan state
+let zoomLevel = 1;
+let panX = 0;
+let panY = 0;
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
+let dragStartPanX = 0;
+let dragStartPanY = 0;
+
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 4;
+const ZOOM_STEP = 0.2;
+
 // Get current cabinet parts based on type
 function getCurrentParts() {
     return currentCabinetType === 'base' ? baseCabinetParts : wallCabinetParts;
@@ -190,6 +204,9 @@ function updateCabinetImage() {
     if (cabinetImage) {
         cabinetImage.src = cacheBust;
         cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
+        
+        // Reset zoom when changing images
+        resetZoom();
     }
 }
 
@@ -214,6 +231,105 @@ function toggleView() {
     // Clear current selection
     closeDetailPanel();
 }
+
+// Zoom and Pan Functions
+function applyZoomAndPan() {
+    const cabinetImage = document.getElementById('cabinetImage');
+    if (!cabinetImage) return;
+    
+    cabinetImage.style.transform = `scale(${zoomLevel}) translate(${panX / zoomLevel}px, ${panY / zoomLevel}px)`;
+    cabinetImage.style.cursor = zoomLevel > 1 ? 'grab' : 'default';
+    
+    // Update zoom controls
+    const zoomInBtn = document.getElementById('zoomIn');
+    const zoomOutBtn = document.getElementById('zoomOut');
+    const resetZoomBtn = document.getElementById('resetZoom');
+    
+    if (zoomInBtn) zoomInBtn.disabled = zoomLevel >= MAX_ZOOM;
+    if (zoomOutBtn) zoomOutBtn.disabled = zoomLevel <= MIN_ZOOM;
+    if (resetZoomBtn) resetZoomBtn.style.display = zoomLevel > 1 ? 'inline-block' : 'none';
+}
+
+function zoomIn() {
+    zoomLevel = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
+    applyZoomAndPan();
+}
+
+function zoomOut() {
+    zoomLevel = Math.max(zoomLevel - ZOOM_STEP, MIN_ZOOM);
+    if (zoomLevel === MIN_ZOOM) {
+        panX = 0;
+        panY = 0;
+    }
+    applyZoomAndPan();
+}
+
+function resetZoom() {
+    zoomLevel = 1;
+    panX = 0;
+    panY = 0;
+    applyZoomAndPan();
+}
+
+function handleWheel(e) {
+    e.preventDefault();
+    
+    if (e.deltaY < 0) {
+        // Scroll up - zoom in
+        zoomLevel = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
+    } else {
+        // Scroll down - zoom out
+        zoomLevel = Math.max(zoomLevel - ZOOM_STEP, MIN_ZOOM);
+        if (zoomLevel === MIN_ZOOM) {
+            panX = 0;
+            panY = 0;
+        }
+    }
+    
+    applyZoomAndPan();
+}
+
+function handleMouseDown(e) {
+    if (zoomLevel <= 1) return;
+    
+    isDragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    dragStartPanX = panX;
+    dragStartPanY = panY;
+    
+    const cabinetImage = document.getElementById('cabinetImage');
+    cabinetImage.style.cursor = 'grabbing';
+    
+    e.preventDefault();
+}
+
+function handleMouseMove(e) {
+    if (!isDragging) return;
+    
+    const deltaX = e.clientX - dragStartX;
+    const deltaY = e.clientY - dragStartY;
+    
+    panX = dragStartPanX + deltaX;
+    panY = dragStartPanY + deltaY;
+    
+    applyZoomAndPan();
+}
+
+function handleMouseUp() {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    const cabinetImage = document.getElementById('cabinetImage');
+    if (cabinetImage) {
+        cabinetImage.style.cursor = zoomLevel > 1 ? 'grab' : 'default';
+    }
+}
+
+// Expose zoom functions to window for button onclick handlers
+window.zoomIn = zoomIn;
+window.zoomOut = zoomOut;
+window.resetZoom = resetZoom;
 
 // Update cabinet visualization based on type
 function updateCabinetVisualization() {
@@ -318,6 +434,20 @@ function initCabinetExplorer() {
     }
     
     // Hotspots removed per user request
+    
+    // Zoom and pan event listeners
+    if (cabinetImage) {
+        // Mouse wheel zoom
+        cabinetImage.addEventListener('wheel', handleWheel, { passive: false });
+        
+        // Drag to pan
+        cabinetImage.addEventListener('mousedown', handleMouseDown);
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+        
+        // Prevent image dragging
+        cabinetImage.addEventListener('dragstart', (e) => e.preventDefault());
+    }
     
     // Initialize visualization
     updateCabinetVisualization();

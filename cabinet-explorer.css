@@ -101,6 +101,7 @@
     justify-content: center;
     align-items: center;
     min-height: 600px;
+    overflow: hidden;
 }
 
 .cabinet-image {
@@ -108,7 +109,64 @@
     height: auto;
     display: block;
     border-radius: 8px;
-    transition: opacity 0.3s ease;
+    transition: transform 0.2s ease-out;
+    transform-origin: center center;
+    user-select: none;
+}
+
+/* Zoom Controls */
+.zoom-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.zoom-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    background-color: var(--color-white);
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-md);
+}
+
+.zoom-btn:hover:not(:disabled) {
+    background-color: var(--color-warm-white);
+    border-color: var(--color-text);
+    transform: scale(1.05);
+}
+
+.zoom-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.zoom-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.zoom-btn svg {
+    pointer-events: none;
+}
+
+.reset-zoom-btn {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.reset-zoom-btn:hover {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
 }
 
 .cabinet-svg {

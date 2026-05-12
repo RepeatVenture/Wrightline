@@ -6,7 +6,7 @@
     <meta name="description" content="Wrightline - Custom cabinetry and millwork built with clean design, practical pricing, and dependable craftsmanship.">
     <title>Wrightline | Smarter Cabinets. Honest Craft.</title>
     <link rel="stylesheet" href="styles.css?v=19">
-    <link rel="stylesheet" href="cabinet-explorer.css?v=4">
+    <link rel="stylesheet" href="cabinet-explorer.css?v=5">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
@@ -114,6 +114,33 @@
                 <!-- Cabinet Visualization -->
                 <div class="cabinet-viewer" id="cabinetViewer">
                     <img id="cabinetImage" src="Base_Cabinet_Assembled.png" alt="Base Cabinet - Assembled View" class="cabinet-image" />
+                    
+                    <!-- Zoom Controls -->
+                    <div class="zoom-controls">
+                        <button onclick="window.zoomIn()" id="zoomIn" class="zoom-btn" title="Zoom In">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="8" cy="8" r="6"/>
+                                <line x1="13" y1="13" x2="18" y2="18"/>
+                                <line x1="8" y1="5" x2="8" y2="11"/>
+                                <line x1="5" y1="8" x2="11" y2="8"/>
+                            </svg>
+                        </button>
+                        <button onclick="window.zoomOut()" id="zoomOut" class="zoom-btn" title="Zoom Out">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="8" cy="8" r="6"/>
+                                <line x1="13" y1="13" x2="18" y2="18"/>
+                                <line x1="5" y1="8" x2="11" y2="8"/>
+                            </svg>
+                        </button>
+                        <button onclick="window.resetZoom()" id="resetZoom" class="zoom-btn reset-zoom-btn" title="Reset Zoom" style="display: none;">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="8" cy="8" r="6"/>
+                                <line x1="13" y1="13" x2="18" y2="18"/>
+                                <path d="M10 5 L10 8 L7 8" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
                     <svg viewBox="0 0 800 900" class="cabinet-svg hotspot-overlay" id="cabinetSvg">
                         <!-- Exploded view elements (hidden initially) -->
                         <g class="exploded-parts" id="explodedParts">
