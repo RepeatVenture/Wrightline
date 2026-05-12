@@ -203,6 +203,11 @@ function updateCabinetImage() {
         
         // SUPER OBVIOUS visual indicators
         console.log('Setting border and background based on type:', type);
+        
+        // Set data attribute for CSS-based styling
+        cabinetViewer.setAttribute('data-cabinet-type', type);
+        console.log('Set data-cabinet-type attribute to:', type);
+        
         if (type === 'wall') {
             console.log('-> Setting RED border + pink background (wall)');
             cabinetViewer.style.border = '10px solid red !important';
@@ -221,6 +226,24 @@ function updateCabinetImage() {
         const computedStyle = window.getComputedStyle(cabinetViewer);
         console.log('ACTUAL border after setting:', computedStyle.border);
         console.log('ACTUAL background-color after setting:', computedStyle.backgroundColor);
+        
+        // FORCE BROWSER REPAINT - multiple strategies
+        console.log('Forcing repaint...');
+        
+        // Strategy 1: Force reflow by reading offsetHeight
+        void cabinetViewer.offsetHeight;
+        
+        // Strategy 2: Toggle display briefly
+        const originalDisplay = cabinetViewer.style.display;
+        cabinetViewer.style.display = 'none';
+        void cabinetViewer.offsetHeight; // Force reflow
+        cabinetViewer.style.display = originalDisplay || 'flex';
+        
+        // Strategy 3: Add and remove a class to trigger repaint
+        cabinetViewer.classList.add('force-repaint');
+        setTimeout(() => {
+            cabinetViewer.classList.remove('force-repaint');
+        }, 10);
         
         // Check again after a delay to see if something is reverting it
         setTimeout(() => {
