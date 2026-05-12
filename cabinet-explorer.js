@@ -152,6 +152,7 @@ function getCurrentParts() {
 
 // Toggle between base and wall cabinets  
 function toggleCabinetType() {
+    console.log('toggleCabinetType called');
     const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
     const toggleLabels = cabinetTypeToggle.querySelectorAll('.toggle-label');
     
@@ -164,6 +165,8 @@ function toggleCabinetType() {
         toggleLabels[1].classList.remove('active');
         toggleLabels[0].classList.add('active');
     }
+    
+    console.log('Current cabinet type:', currentCabinetType);
     
     // Update the visualization and image
     updateCabinetVisualization();
@@ -180,12 +183,20 @@ function updateCabinetImage() {
     const viewSuffix = currentView === 'assembled' ? 'Assembled' : 'Exploded';
     const imagePath = `${typePrefix} Cabinet ${viewSuffix}.png`;
     
-    cabinetImage.src = imagePath;
-    cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
+    console.log('Updating cabinet image to:', imagePath);
+    console.log('cabinetImage element:', cabinetImage);
+    
+    if (cabinetImage) {
+        cabinetImage.src = imagePath;
+        cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
+    } else {
+        console.error('cabinetImage element not found!');
+    }
 }
 
 // Toggle between assembled and exploded views
 function toggleView() {
+    console.log('toggleView called');
     const viewToggle = document.getElementById('viewToggle');
     const toggleLabels = viewToggle.querySelectorAll('.toggle-label');
     
@@ -198,6 +209,8 @@ function toggleView() {
         toggleLabels[1].classList.remove('active');
         toggleLabels[0].classList.add('active');
     }
+    
+    console.log('Current view:', currentView);
     
     // Update the image
     updateCabinetImage();
@@ -266,11 +279,16 @@ function closeDetailPanel() {
 
 // Initialize
 function initCabinetExplorer() {
+    console.log('initCabinetExplorer called');
+    
     // Get elements
     const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
     const viewToggle = document.getElementById('viewToggle');
     const detailPanel = document.getElementById('detailPanel');
     const detailClose = document.getElementById('detailClose');
+    
+    console.log('cabinetTypeToggle:', cabinetTypeToggle);
+    console.log('viewToggle:', viewToggle);
     
     if (!cabinetTypeToggle || !viewToggle) {
         console.error('Cabinet Explorer: Toggle buttons not found');
@@ -278,10 +296,16 @@ function initCabinetExplorer() {
     }
     
     // Cabinet type toggle
-    cabinetTypeToggle.addEventListener('click', toggleCabinetType);
+    cabinetTypeToggle.addEventListener('click', function(e) {
+        console.log('Cabinet type toggle clicked', e);
+        toggleCabinetType();
+    });
     
     // View toggle button
-    viewToggle.addEventListener('click', toggleView);
+    viewToggle.addEventListener('click', function(e) {
+        console.log('View toggle clicked', e);
+        toggleView();
+    });
     
     // Close button
     if (detailClose) {

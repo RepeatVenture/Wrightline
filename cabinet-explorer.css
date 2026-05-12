@@ -50,7 +50,6 @@
     padding: 4px;
     cursor: pointer;
     z-index: 10;
-    cursor: pointer;
     font-family: var(--font-body);
 }
 
@@ -62,6 +61,7 @@
     border-radius: 50px;
     transition: var(--transition);
     white-space: nowrap;
+    pointer-events: none;
 }
 
 .toggle-label.active {
