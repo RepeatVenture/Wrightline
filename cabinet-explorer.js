@@ -183,14 +183,17 @@ function toggleViewMode() {
         viewer3DContainer.style.display = 'flex';
         
         // Initialize 3D viewer if not already done
-        if (!cabinet3D) {
-            import('./cabinet-3d.js').then(module => {
-                cabinet3D = module;
-                module.init3DViewer('cabinetViewer3D');
-                //  Set initial state
-                module.toggle3DCabinetType(currentCabinetType);
-                module.toggle3DView(currentView);
-            });
+        if (!cabinet3D && window.init3DViewer) {
+            window.init3DViewer('cabinetViewer3D');
+            cabinet3D = true; // Mark as initialized
+            
+            // Set initial state
+            if (window.toggle3DCabinetType) {
+                window.toggle3DCabinetType(currentCabinetType);
+            }
+            if (window.toggle3DView) {
+                window.toggle3DView(currentView);
+            }
         }
     } else {
         currentViewMode = '2d';
@@ -220,8 +223,8 @@ function toggleCabinetType() {
     if (currentViewMode === '2d') {
         updateCabinetVisualization();
         updateCabinetImage();
-    } else if (cabinet3D) {
-        cabinet3D.toggle3DCabinetType(currentCabinetType);
+    } else if (window.toggle3DCabinetType) {
+        window.toggle3DCabinetType(currentCabinetType);
     }
     
     // Clear current selection
@@ -269,8 +272,8 @@ function toggleView() {
     // Update visualization based on current view mode
     if (currentViewMode === '2d') {
         updateCabinetImage();
-    } else if (cabinet3D) {
-        cabinet3D.toggle3DView(currentView);
+    } else if (window.toggle3DView) {
+        window.toggle3DView(currentView);
     }
     
     // Clear current selection
@@ -378,7 +381,9 @@ window.resetZoom = resetZoom;
 
 // Update cabinet visualization based on type
 function updateCabinetVisualization() {
-    const cabinetViewer = document.getElementById('cabinetViewer');
+    const cabinetViewer = document.getElementById('cabinetViewer2D');
+    
+    if (!cabinetViewer) return;
     
     // Add subtle animation on type change
     cabinetViewer.style.opacity = '0.7';

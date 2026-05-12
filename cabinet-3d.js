@@ -37,8 +37,14 @@ const selectedMaterial = new THREE.MeshStandardMaterial({
 
 // Initialize 3D scene
 export function init3DViewer(containerId) {
+    console.log('Initializing 3D viewer in:', containerId);
     const container = document.getElementById(containerId);
-    if (!container) return;
+    if (!container) {
+        console.error('Container not found:', containerId);
+        return;
+    }
+    
+    console.log('Container dimensions:', container.clientWidth, 'x', container.clientHeight);
 
     // Clear existing content
     container.innerHTML = '';
@@ -563,10 +569,14 @@ function easeInOutCubic(t) {
 }
 
 // Expose functions to window object
+window.init3DViewer = init3DViewer;
+window.toggle3DCabinetType = toggle3DCabinetType;
+window.toggle3DView = toggle3DView;
 window.selectComponent3D = selectComponent;
 window.deselectComponent3D = deselectComponent;
 window.explodeDrawerBox3D = explodeDrawerBox;
 window.reassembleDrawerBox3D = reassembleDrawerBox;
+window.dispose3DViewer = dispose3DViewer;
 
 // Cleanup
 export function dispose3DViewer() {
