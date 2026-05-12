@@ -65,7 +65,7 @@ const baseCabinetParts = {
     'edge-banding': {
         number: 11,
         title: 'Edge Banding',
-        description: 'All visible plywood edges are finished with matching edge banding that\'s glued and trimmed flush. No raw edges inside your cabinet.',
+        description: 'All visible plywood edges are finished with matching edge banding that's glued and trimmed flush. No raw edges inside your cabinet.',
         why: 'Edge banding protects plywood edges from chipping and moisture. It also makes the interior look finished and professional.'
     },
     'interior-finish': {
@@ -124,7 +124,7 @@ const wallCabinetParts = {
         number: 9,
         title: 'Edge Banding',
         description: 'All visible plywood edges are finished with matching edge banding. Protects edges and provides a clean finished appearance.',
-        why: 'Edge banding seals plywood edges against moisture and prevents chipping. It\'s a sign of quality construction.'
+        why: 'Edge banding seals plywood edges against moisture and prevents chipping. It's a sign of quality construction.'
     },
     'interior-finish': {
         number: 10,
@@ -136,7 +136,7 @@ const wallCabinetParts = {
         number: 6,
         title: 'Glass Door Option',
         description: 'Optional glass panel inserts for displaying dishes or glassware. Mullions can be added for traditional styling.',
-        why: 'Glass doors add visual interest and let you display items you\'re proud of. Quality glass installation means no rattling or gaps.'
+        why: 'Glass doors add visual interest and let you display items you're proud of. Quality glass installation means no rattling or gaps.'
     }
 };
 
@@ -313,6 +313,7 @@ function initCabinetExplorer() {
         e.preventDefault();
         e.stopPropagation();
         toggleView();
+    });
     });
     
     // Close button
