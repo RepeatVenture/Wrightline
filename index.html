@@ -100,11 +100,11 @@
             <p class="explorer-intro">See what makes Wrightline cabinets different. Every component is chosen for durability, function, and quality.</p>
             
             <div class="explorer-controls">
-                <button class="cabinet-type-toggle" id="cabinetTypeToggle">
+                <button class="cabinet-type-toggle" id="cabinetTypeToggle" onclick="console.log('Inline click handler fired'); window.toggleCabinetType && window.toggleCabinetType();">
                     <span class="toggle-label base-cabinet active">Base Cabinets</span>
                     <span class="toggle-label wall-cabinet">Wall Cabinets</span>
                 </button>
-                <button class="view-toggle" id="viewToggle">
+                <button class="view-toggle" id="viewToggle" onclick="console.log('View toggle inline fired'); window.toggleView && window.toggleView();">
                     <span class="toggle-label assembled active">Assembled View</span>
                     <span class="toggle-label exploded">Exploded View</span>
                 </button>

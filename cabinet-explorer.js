@@ -352,3 +352,7 @@ window.CabinetExplorer = {
     wallCabinetParts,
     currentView
 };
+
+// Expose functions globally for inline onclick handlers (debugging)
+window.toggleCabinetType = toggleCabinetType;
+window.toggleView = toggleView;
