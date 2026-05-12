@@ -190,19 +190,33 @@ function updateCabinetImage() {
     console.log('Current type:', currentCabinetType, 'Current view:', currentView);
     
     if (cabinetImage) {
-        // Force reload by setting src
         const oldSrc = cabinetImage.src;
-        cabinetImage.src = encodedPath;
-        console.log('Image src changed from', oldSrc, 'to', cabinetImage.src);
-        cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
         
-        // Add load event to verify image loaded
-        cabinetImage.onload = function() {
-            console.log('✓ Image loaded successfully:', encodedPath);
-        };
-        cabinetImage.onerror = function() {
-            console.error('✗ Image failed to load:', encodedPath);
-        };
+        // Fade out
+        cabinetImage.style.opacity = '0.3';
+        
+        // Small delay to show fade effect, then change image
+        setTimeout(() => {
+            cabinetImage.src = encodedPath;
+            console.log('Image src changed from', oldSrc, 'to', cabinetImage.src);
+            cabinetImage.alt = `${typePrefix} Cabinet - ${viewSuffix} View`;
+            
+            // Force reflow
+            void cabinetImage.offsetHeight;
+            
+            // Fade back in
+            cabinetImage.style.opacity = '1';
+            
+            // Add load event to verify image loaded
+            cabinetImage.onload = function() {
+                console.log('✓ Image loaded successfully:', encodedPath);
+                cabinetImage.style.opacity = '1';
+            };
+            cabinetImage.onerror = function() {
+                console.error('✗ Image failed to load:', encodedPath);
+                cabinetImage.style.opacity = '1';
+            };
+        }, 150);
     } else {
         console.error('cabinetImage element not found!');
     }
