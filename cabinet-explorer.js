@@ -153,6 +153,11 @@ function getCurrentParts() {
 // Toggle between base and wall cabinets  
 function toggleCabinetType() {
     console.log('toggleCabinetType called');
+    
+    // EXTREME VISUAL TEST - Change entire page background and show alert
+    document.body.style.backgroundColor = currentCabinetType === 'base' ? '#ff0000' : '#00ff00';
+    alert('Toggle clicked! Current: ' + currentCabinetType + ', switching to: ' + (currentCabinetType === 'base' ? 'WALL' : 'BASE'));
+    
     const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
     const toggleLabels = cabinetTypeToggle.querySelectorAll('.toggle-label');
     
