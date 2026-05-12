@@ -154,10 +154,6 @@ function getCurrentParts() {
 function toggleCabinetType() {
     console.log('toggleCabinetType called');
     
-    // EXTREME VISUAL TEST - Change entire page background and show alert
-    document.body.style.backgroundColor = currentCabinetType === 'base' ? '#ff0000' : '#00ff00';
-    alert('Toggle clicked! Current: ' + currentCabinetType + ', switching to: ' + (currentCabinetType === 'base' ? 'WALL' : 'BASE'));
-    
     const cabinetTypeToggle = document.getElementById('cabinetTypeToggle');
     const toggleLabels = cabinetTypeToggle.querySelectorAll('.toggle-label');
     
@@ -401,21 +397,22 @@ function initCabinetExplorer() {
         return;
     }
     
+    // Event listeners REMOVED - using inline onclick handlers to avoid double-firing
     // Cabinet type toggle
-    cabinetTypeToggle.addEventListener('click', function(e) {
-        console.log('=== Cabinet Type Button Clicked ===');
-        e.preventDefault();
-        e.stopPropagation();
-        toggleCabinetType();
-    });
+    // cabinetTypeToggle.addEventListener('click', function(e) {
+    //     console.log('=== Cabinet Type Button Clicked ===');
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //     toggleCabinetType();
+    // });
     
     // View toggle button
-    viewToggle.addEventListener('click', function(e) {
-        console.log('=== View Toggle Button Clicked ===');
-        e.preventDefault();
-        e.stopPropagation();
-        toggleView();
-    });
+    // viewToggle.addEventListener('click', function(e) {
+    //     console.log('=== View Toggle Button Clicked ===');
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //     toggleView();
+    // });
     
     // Close button
     if (detailClose) {
