@@ -190,14 +190,12 @@ function updateCabinetImage() {
     const view = currentView;
     const typePrefix = type === 'base' ? 'Base' : 'Wall';
     const viewSuffix = view === 'assembled' ? 'Assembled' : 'Exploded';
-    const imagePath = `${typePrefix} Cabinet ${viewSuffix}.png`;
-    // URL encode spaces for proper loading
-    const encodedPath = imagePath.replace(/ /g, '%20');
+    const imagePath = `${typePrefix}_Cabinet_${viewSuffix}.png`;
     // Add timestamp to force cache refresh
-    const cacheBust = encodedPath + '?t=' + Date.now();
+    const cacheBust = imagePath + '?t=' + Date.now();
     
     console.log('Updating cabinet image to:', imagePath);
-    console.log('Encoded path with cache bust:', cacheBust);
+    console.log('Path with cache bust:', cacheBust);
     console.log('typePrefix:', typePrefix, 'viewSuffix:', viewSuffix);
     
     if (cabinetImage) {
