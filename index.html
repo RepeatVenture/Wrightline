@@ -99,49 +99,8 @@
             <h2 class="section-title">Built to Last</h2>
             <p class="explorer-intro">See what makes Wrightline cabinets different. Every component is chosen for durability, function, and quality.</p>
             
-            <div class="explorer-controls">
-                <button class="cabinet-type-toggle" id="cabinetTypeToggle" onclick="window.toggleCabinetType()">
-                    <span class="toggle-label base-cabinet">Base Cabinets</span>
-                    <span class="toggle-label wall-cabinet active">Wall Cabinets</span>
-                </button>
-                <button class="view-toggle" id="viewToggle" onclick="window.toggleView()">
-                    <span class="toggle-label assembled active">Assembled View</span>
-                    <span class="toggle-label exploded">Exploded View</span>
-                </button>
-            </div>
-
             <div class="explorer-container">
-                <!-- 3D Cabinet Visualization -->
-                <div class="viewer-3d-container" id="viewer3DContainer">
-                    <div class="cabinet-viewer cabinet-viewer-3d" id="cabinetViewer3D"></div>
-                    
-                    <!-- Component Selector Sidebar -->
-                    <div class="component-selector">
-                        <h3>Components</h3>
-                        <p class="component-help">Click a component below or click on the 3D model to select it</p>
-                        <div id="componentList" class="component-list">
-                            <!-- Component buttons will be populated dynamically -->
-                        </div>
-                        
-                        <!-- Drawer Explode Controls (shown when drawer selected) -->
-                        <div id="drawerExplodeControls" class="drawer-explode-controls" style="display: none;">
-                            <h4>Drawer Box</h4>
-                            <button onclick="window.explodeDrawerBox3D()" class="btn btn-sm">Explode Drawer</button>
-                            <button onclick="window.reassembleDrawerBox3D()" class="btn btn-sm">Reassemble Drawer</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Detail Panel -->
-                <div class="detail-panel" id="detailPanel">
-                    <div class="detail-card" id="detailCard">
-                        <button class="detail-close" id="detailClose">×</button>
-                        <div class="detail-number" id="detailNumber">1</div>
-                        <h3 class="detail-title" id="detailTitle">Select a component</h3>
-                        <p class="detail-description" id="detailDescription">Click on any numbered hotspot to learn about that cabinet component.</p>
-                        <div class="detail-why" id="detailWhy"></div>
-                    </div>
-                </div>
+                <p style="text-align: center; padding: 60px 20px; color: #666;">Cabinet visualization coming soon.</p>
             </div>
 
             <div class="explorer-cta">
@@ -324,15 +283,6 @@
         formspree('initForm', { formElement: '#contact-form', formId: 'mbdqnrey' });
     </script>
     <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-        }
-    }
-    </script>
-    <script type="module" src="cabinet-3d.js"></script>
     <script src="cabinet-explorer.js"></script>
     <script src="script.js"></script>
 </body>

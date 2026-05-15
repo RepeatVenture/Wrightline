@@ -1,21 +1,9 @@
 // Cabinet Construction Explorer Interactive Functionality
 
-// Import 3D viewer module
-let cabinet3D = null;
-
 // State
 let currentCabinetType = 'wall'; // 'base' or 'wall'
 let currentView = 'assembled'; // 'assembled' or 'exploded'
 let selectedPart = null;
-let isDragging = false;
-let dragStartX = 0;
-let dragStartY = 0;
-let dragStartPanX = 0;
-let dragStartPanY = 0;
-
-const MIN_ZOOM = 1;
-const MAX_ZOOM = 4;
-const ZOOM_STEP = 0.2;
 
 // Base Cabinet component data
 const baseCabinetParts = {
@@ -465,31 +453,10 @@ if (document.readyState === 'loading') {
     initCabinetExplorer();
 }
 
-// Export for potential future 3D upgrade
+// Export for potential future use
 window.CabinetExplorer = {
-    toggleView,
     showPartDetail,
     baseCabinetParts,
     wallCabinetParts,
     currentView
 };
-
-// Expose functions globally for inline onclick handlers
-window.toggleCabinetType = toggleCabinetType;
-window.toggleView = toggleView;
-
-// Callback for when drawer box is selected in 3D view
-window.onDrawerBoxSelected = function() {
-    const drawerControls = document.getElementById('drawerExplodeControls');
-    if (drawerControls) {
-        drawerControls.style.display = 'block';
-    }
-};
-
-// Initialize 3D viewer on page load
-document.addEventListener('DOMContentLoaded', function() {
-    if (window.init3DViewer) {
-        window.init3DViewer('cabinetViewer3D', currentCabinetType, currentView);
-        cabinet3D = true;
-    }
-});
