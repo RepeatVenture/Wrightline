@@ -514,6 +514,94 @@ a {
 }
 
 /* ===========================
+   About Section
+   =========================== */
+
+.about {
+    padding: 100px 0;
+    background-color: var(--color-white);
+}
+
+@media (min-width: 768px) {
+    .about {
+        padding: 120px 0;
+    }
+}
+
+.about-content {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.about-story {
+    margin-bottom: 60px;
+}
+
+.about-story .lead {
+    font-size: 22px;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin-bottom: 24px;
+    font-weight: 500;
+}
+
+.about-story p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    margin-bottom: 20px;
+}
+
+.about-story .emphasis {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: 32px;
+    padding: 24px;
+    background-color: var(--color-background);
+    border-left: 4px solid var(--color-primary);
+    border-radius: 4px;
+}
+
+.about-values {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+@media (min-width: 768px) {
+    .about-values {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+    }
+}
+
+.value-card {
+    padding: 32px;
+    background-color: var(--color-background);
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.value-card h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    color: var(--color-text);
+}
+
+.value-card p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--color-text-light);
+}
+
+/* ===========================
    Process Section
    =========================== */
 
